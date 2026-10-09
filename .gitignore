@@ -1,0 +1,23 @@
+
+# Microsoft Office temporary files
+~$*.xlsx
+~$*.xlsm
+~$*.docx
+~$*.pptx
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor backups
+*.tmp
+*.bak
+*~
+
+# Private files and credentials
+.env
+*.key
+*.pem
+secrets/
+private/
+  
