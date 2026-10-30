@@ -1,0 +1,25 @@
+# FX Hedging
+
+## Overview
+
+This capability demonstrates my ability to evaluate foreign exchange risk and compare hedging strategies.
+
+## Scenario
+
+A U.S. landing-gear manufacturer expects to receive EUR 10,500,000 from a French aircraft manufacturer in 365 days.
+
+## Methods
+
+- Forward contracts
+- Money-market hedges
+- Currency put options
+- Excel financial modeling
+- Independent model validation
+
+## Project Deliverables
+
+- Stage 1: Executive Brief
+- Stage 2: Model Specification (`spec.md`)
+- Stage 3: Excel Model (`model.xlsx`) and Build Audit
+- Stage 4: Market Data
+- Stage 5: Validation and Decision Memo
