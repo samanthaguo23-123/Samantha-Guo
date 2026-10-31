@@ -4,7 +4,7 @@ engagement: fx-hedging
 capability: fx-hedging
 date: 2026-10-23
 status: committed
-hypothesis: "REPLACE WITH YOUR OWN PREDICTION"
+hypothesis: "I expect the forward to provide a higher guaranteed net USD outcome than the put option's minimum because the put requires an upfront premium."
 ---
 
 # FX Hedging Executive Brief
