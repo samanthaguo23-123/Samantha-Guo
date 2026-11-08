@@ -49,3 +49,40 @@ This file documents meaningful AI-assisted work on my finance and economics port
 - The forward rate is indicative, and the comparison does not yet include all financing and transaction costs.
 
 **Outcome:** Prepared an AI-assisted draft of the Stage 1 executive brief and received instructions for organizing the FX hedging project in GitHub.
+
+## FX Hedging Stage 2 — AI Review and Revision
+
+**Project:** Scenario 15 — Landing Gear  
+**File reviewed:** `capabilities/fx-hedging/spec.md`
+
+### Initial Draft
+
+I prepared a model specification describing the inputs, workbook architecture, assumptions, formulas, sensitivity analysis, validation checks, and expected outputs for an FX hedging workbook.
+
+I used ChatGPT to help draft and organize the specification, then submitted the draft for an additional review before building the Excel model.
+
+### AI Review Prompt
+
+"Review my FX hedging model specification against the Stage 2 assignment requirements. Identify missing sections, calculation errors, incomplete formulas, and unclear instructions that could cause problems when building the Excel workbook in Stage 3."
+
+### AI Feedback
+
+The review identified several issues:
+
+1. Section 5.6 needed clarification that the call option calculation applies to a foreign-currency payable, not the EUR receivable being hedged.
+2. Section 6.4 contained an incomplete sentence about settlement-date proceeds.
+3. Section 7.2 needed more precise money-market calculation checkpoints.
+4. Section 7.5 was incomplete and needed additional sensitivity and workbook integrity checks.
+5. Section 8 needed a complete description of the named outputs, summary table, sensitivity table, chart, and validation results.
+
+### Revisions Made
+
+I revised the specification to clarify the call option's purpose, complete the sensitivity assumptions, improve the money-market validation figures, add workbook integrity checks, and define the required outputs more precisely.
+
+I also clarified that the baseline output names refer to calculations at the initial spot rate, while the sensitivity table calculates results separately for each settlement-rate scenario.
+
+### What I Learned
+
+The review showed me why a model specification needs precise formulas, consistent named ranges, and clear validation requirements. Small ambiguities in a written specification can lead to incorrect formulas or outputs when an AI builds the Excel workbook.
+
+The revised specification will serve as the instructions for constructing and auditing the workbook in Stage 3.
