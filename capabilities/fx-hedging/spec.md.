@@ -47,3 +47,437 @@ These values will be calculated automatically using the named inputs rather than
 - Option premiums are paid upfront and carried forward using the USD interest rate so that all strategy proceeds are compared at settlement.
 - The assigned scenario values will remain fixed unless the business exposure changes. Market-dependent inputs are indicative and will be replaced or verified with live market data in Stage 4.
 - All editable input cells will be highlighted yellow, assumptions will be identified in blue, and calculated output cells will be shaded gray.
+## 3. Workbook Tab Architecture
+
+The Excel workbook will contain eight worksheets. Each tab will have a specific purpose to make the model organized, easy to understand, and easy to audit.
+
+| Worksheet | Purpose | Required Contents |
+|---|---|---|
+| `Cover` | Introduces the model | Project title, Scenario 15 (Landing Gear), EUR 10,500,000 receivable, 365-day settlement, model purpose, and preparation date |
+| `Legend_Key` | Explains formatting | Color legend for inputs, assumptions, formulas, cross-tab references, and outputs |
+| `Inputs` | Stores model inputs | All ten required named ranges, `BASIS`, `STEP_FRAC`, values, units, placeholder labels, and Stage 4 data sources |
+| `Forward_Hedge` | Calculates forward proceeds | `USD_FWD = FC_AMT * F0_in` |
+| `Money_Market` | Calculates money-market proceeds | EUR borrowing amount, USD conversion, USD investment, implied forward rate, and parity difference |
+| `Option_Hedge` | Calculates option protection | Put premium, future value of premium, protected minimum USD proceeds, and option proceeds at settlement |
+| `Sensitivity` | Compares all strategies | Eleven settlement spot scenarios, unhedged proceeds, forward proceeds, money-market proceeds, put proceeds, and a comparison line chart |
+| `Notes_Assumptions` | Documents model limitations | Assumptions, ACT/360 convention, data sources, access dates, validation rules, and limitations |
+
+### Worksheet Design and Formatting
+
+- All worksheet names must match the names listed above.
+- The `Inputs` worksheet will be the single source of truth for all editable model assumptions and market inputs.
+- Yellow cells will identify editable inputs.
+- Blue text will identify assumptions.
+- Black text will identify formulas.
+- Green text will identify references to other worksheets.
+- Gray-shaded cells will identify calculated outputs.
+- Each worksheet will have a title, clearly labeled calculations, and units.
+- Currency proceeds will be displayed in USD with two decimal places, while exchange rates will display four decimal places.
+- The `Sensitivity` worksheet will contain one comparison chart showing the USD proceeds of all four strategies.
+- All calculations will reference the standardized named ranges instead of hard-coded values or cell addresses.
+
+The workbook will be designed so that updating the input values automatically updates the hedge calculations, sensitivity table, and summary results.
+## 4. Assumptions and Constraints
+
+The model will use the following assumptions to keep the calculations consistent and make the results easier to compare.
+
+### 4.1 Exchange Rate and Settlement
+
+- The company expects to receive EUR 10,500,000 in 365 days.
+- All exchange rates are expressed in USD per EUR.
+- A decrease in EURUSD means the euro weakens, reducing the company's unhedged USD proceeds.
+- The company is assumed to receive the full payment on time.
+- All hedging strategies will cover the entire receivable amount.
+
+### 4.2 Interest Rates and Day-Count Convention
+
+- Both USD and EUR interest rates are annualized and use the ACT/360 convention.
+- The model will use `BASIS = 360` for interest calculations.
+- Interest will be calculated using simple interest rather than compounding.
+- The initial interest rates of 5.30% for USD and 3.10% for EUR are placeholders that will be replaced with sourced market data in Stage 4.
+- The money-market hedge assumes the company can borrow euros and invest U.S. dollars at the specified rates.
+
+### 4.3 Covered Interest Rate Parity
+
+- Under covered interest rate parity, the forward rate should approximately equal the rate implied by the spot exchange rate and the two interest rates.
+- The model will calculate the implied forward rate and compare it with the quoted forward rate.
+- Differences may result from inconsistent market inputs, bid-ask spreads, borrowing and lending rates, or other market conditions.
+- The initial placeholder values do not satisfy parity exactly. This difference will be flagged for review rather than automatically treated as a formula error.
+
+### 4.4 Option Premium Treatment
+
+- The EUR put option gives the company the right, but not the obligation, to sell euros at the strike price.
+- The put premium is paid upfront in USD.
+- The premium will be carried forward to settlement using the USD interest rate to account for its financing or opportunity cost.
+- The initial put premium is $0.0245 per EUR, or $257,250 for the full receivable.
+- The put strike is initially set at 1.1800 USD/EUR.
+- The call option inputs will be retained for completeness, but the put is the relevant option hedge for this EUR receivable.
+
+### 4.5 Transaction Costs and Other Limitations
+
+- Transaction fees, bid-ask spreads, and additional financing charges are excluded from the base-case calculations.
+- Taxes and hedge accounting treatment are excluded.
+- Counterparty, credit, and settlement risks are not modeled.
+- The model assumes all hedging instruments are available for the full receivable amount and settlement period.
+- The sensitivity analysis changes only the settlement exchange rate while holding other inputs constant.
+- The model does not assign probabilities to future exchange rates.
+- The model compares financial outcomes but does not make the final hedging recommendation, which will be completed in Stage 5.
+
+All market-dependent inputs are indicative and will be replaced or verified using live market data in Stage 4.
+## 5. Calculation Flow
+
+The workbook will calculate USD proceeds for the unhedged position, forward hedge, money-market hedge, and put option hedge. All formulas will use standardized named ranges instead of cell addresses. Calculated values will update automatically when the inputs change.
+
+### 5.1 Derived Calculations
+
+The model will first calculate the USD and EUR interest accumulation factors:
+
+- `DF_USD = 1 + R_USD * T_DAYS / BASIS`
+- `DF_FC = 1 + R_FC * T_DAYS / BASIS`
+- `FV_PREM_PUT = -PREM_PUT * FC_AMT * DF_USD`
+- `FV_PREM_CALL = -PREM_CALL * FC_AMT * DF_USD`
+
+The negative premium values represent the cost of purchasing an option, including the opportunity cost of paying the premium upfront.
+
+### 5.2 Unhedged Position
+
+The company receives EUR 10,500,000 and converts it into USD at the settlement exchange rate.
+
+`USD_NO_HEDGE(S_T) = FC_AMT * S_T`
+
+The USD proceeds will increase if the euro strengthens and decrease if the euro weakens.
+
+### 5.3 Forward Hedge
+
+The company enters a forward contract to sell the EUR receivable at the agreed forward rate.
+
+`USD_FWD = FC_AMT * F0_in`
+
+Using the assigned forward rate:
+
+`10,500,000 * 1.1807 = $12,397,350`
+
+The forward hedge provides fixed USD proceeds regardless of the settlement exchange rate.
+
+### 5.4 Money-Market Hedge
+
+The money-market hedge will be calculated in three separate steps so each calculation can be reviewed.
+
+**Step 1 — Borrow EUR today**
+
+`BORROW_FC = FC_AMT / DF_FC`
+
+The company borrows the present value of its future EUR receivable. The loan and interest will be repaid using the receivable at settlement.
+
+**Step 2 — Convert borrowed EUR into USD**
+
+`USD_NOW = BORROW_FC * S0_in`
+
+The borrowed euros are immediately converted into dollars at the initial spot rate.
+
+**Step 3 — Invest USD until settlement**
+
+`USD_MM = USD_NOW * DF_USD`
+
+The USD investment grows until settlement and represents the money-market hedge proceeds.
+
+**Implied Forward Rate**
+
+`F_implied = S0_in * DF_USD / DF_FC`
+
+**Parity Difference**
+
+`PARITY_DIFF = F_implied - F0_in`
+
+The implied forward rate will be compared with the assigned forward rate to identify differences between the two hedging strategies.
+
+### 5.5 Put Option Hedge
+
+The company purchases a EUR put option to protect against a decline in the euro while keeping the ability to benefit from appreciation.
+
+**Initial Premium**
+
+`PUT_PREMIUM = FC_AMT * PREM_PUT`
+
+Using the assigned premium:
+
+`10,500,000 * 0.0245 = $257,250`
+
+**Net USD Proceeds at Settlement**
+
+`USD_PUT(S_T) = FC_AMT * MAX(S_T, K_PUT) + FV_PREM_PUT`
+
+If the settlement exchange rate is below the strike, the company exercises the put and sells euros at the strike. If the exchange rate is above the strike, the put expires and the company sells euros at the market rate.
+
+**Protected Minimum Proceeds**
+
+`USD_FLOOR_PUT = FC_AMT * K_PUT + FV_PREM_PUT`
+
+This represents the minimum USD proceeds after accounting for the premium's future value.
+
+### 5.6 Call Option Reference
+
+A EUR call option is appropriate for a foreign-currency payable rather than the EUR receivable in Scenario 15. The workbook will retain the call inputs for reference.
+
+For a EUR payable, the net USD outlay at settlement is:
+
+`USD_CALL(S_T) = FC_AMT * MIN(S_T, K_CALL) - FV_PREM_CALL`
+
+Because `FV_PREM_CALL` is negative, subtracting it adds the financed premium cost to the payable.
+
+For a standalone purchased EUR call, the net option payoff is:
+
+`CALL_PAYOFF(S_T) = FC_AMT * MAX(S_T - K_CALL, 0) + FV_PREM_CALL`
+
+The call calculations are reference formulas only and will not be included in the main receivable sensitivity comparison.
+### 5.7 Calculation Requirements
+
+- All formulas must reference named inputs or derived named calculations.
+- Each money-market hedge step must appear separately on the `Money_Market` worksheet.
+- Forward and money-market proceeds must remain constant across settlement exchange-rate scenarios.
+- Unhedged and put option proceeds must recalculate for every settlement exchange rate.
+- The model must not hard-code calculated proceeds.
+- All strategy comparisons must use settlement-date USD values.
+- The `Sensitivity` worksheet will reference the calculated results from the individual hedge worksheets.
+## 6. Sensitivity Plan
+
+The sensitivity analysis will show how changes in the EUR/USD settlement exchange rate affect the company's USD proceeds under each hedging strategy.
+
+### 6.1 Exchange Rate Scenarios
+
+The model will calculate 11 settlement exchange-rate scenarios, ranging from 5% below to 5% above the initial spot rate in 1% increments.
+
+The formula will be:
+
+`S_T = S0_in * (1 + n * STEP_FRAC)`
+
+Where `n` ranges from `-5` to `5` and `STEP_FRAC = 0.01`.
+
+Using the placeholder spot rate of 1.1800 USD/EUR:
+
+| Change | Settlement Rate (`S_T`) |
+|---|---|
+| -5% | 1.1210 |
+| -4% | 1.1328 |
+| -3% | 1.1446 |
+| -2% | 1.1564 |
+| -1% | 1.1682 |
+| 0% | 1.1800 |
+| +1% | 1.1918 |
+| +2% | 1.2036 |
+| +3% | 1.2154 |
+| +4% | 1.2272 |
+| +5% | 1.2390 |
+
+These settlement rates must be generated by formulas rather than manually entered.
+
+### 6.2 Strategy Comparison Table
+
+The `Sensitivity` worksheet will calculate the following values for each settlement exchange-rate scenario:
+
+| Output | Formula |
+|---|---|
+| Unhedged proceeds | `USD_NO_HEDGE = FC_AMT * S_T` |
+| Forward proceeds | `USD_FWD = FC_AMT * F0_in` |
+| Money-market proceeds | `USD_MM = USD_NOW * DF_USD` |
+| Put option proceeds | `USD_PUT = FC_AMT * MAX(S_T, K_PUT) + FV_PREM_PUT` |
+| Forward hedge profit | `USD_FWD - USD_NO_HEDGE` |
+| Money-market hedge profit | `USD_MM - USD_NO_HEDGE` |
+| Put hedge profit | `USD_PUT - USD_NO_HEDGE` |
+
+The table will also identify the strategy with the highest USD proceeds in each scenario, including the unhedged position, and the best active hedge excluding the unhedged position. Ties will be labeled as ties.
+
+### 6.3 Sensitivity Chart
+
+The `Sensitivity` worksheet will include one line chart with:
+
+- **X-axis:** Settlement exchange rate (`S_T`), USD/EUR.
+- **Y-axis:** Net USD proceeds at settlement.
+- **Four separate lines:** Unhedged, Forward, Money-Market, and Put Option.
+- **Chart title:** FX Hedging Sensitivity Analysis — Scenario 15.
+
+The unhedged line should increase as the euro strengthens. The forward and money-market lines should remain horizontal because their proceeds are locked in. The put option line should remain flat below its strike and increase above the strike, after accounting for the premium cost.
+
+The chart will help the CFO compare guaranteed proceeds against the opportunity to benefit from euro appreciation.
+
+### 6.4 Sensitivity Assumptions
+
+- Only the settlement exchange rate changes between scenarios.
+- All other inputs remain constant.
+- The put premium includes its settlement-date financing cost.
+- All proceeds are calculated in USD at the settlement date.
+- The sensitivity table and chart must update automatically when the input values change.
+## 7. Validation Rules (Check Figures)
+
+The workbook will include validation checks to confirm that the hedging calculations are accurate and that the model updates correctly when inputs change. These checks will be used to audit the Excel workbook in Stage 3.
+
+### 7.1 Forward Hedge Check
+
+Using the assigned scenario values:
+
+`USD_FWD = FC_AMT * F0_in`
+
+`USD_FWD = 10,500,000 * 1.1807 = $12,397,350`
+
+The forward hedge must produce $12,397,350 regardless of changes in the settlement exchange rate.
+
+### 7.2 Money-Market Hedge Check
+
+The money-market hedge must calculate three separate steps:
+
+1. `BORROW_FC = FC_AMT / DF_FC`
+2. `USD_NOW = BORROW_FC * S0_in`
+3. `USD_MM = USD_NOW * DF_USD`
+
+Using the placeholder inputs (`FC_AMT = 10,500,000`, `S0_in = 1.1800`, `R_USD = 5.30%`, `R_FC = 3.10%`, `T_DAYS = 365`, and `BASIS = 360`), the expected results are:
+
+| Calculation | Expected Result |
+|---|---|
+| EUR borrowed (`BORROW_FC`) | €10,180,035.82 |
+| USD converted today (`USD_NOW`) | $12,012,442.27 |
+| USD proceeds at settlement (`USD_MM`) | $12,657,944.20 |
+| Implied forward rate (`F_implied`) | 1.2055185 USD/EUR |
+
+The EUR borrowing amount multiplied by `DF_FC` must equal `FC_AMT`, allowing for rounding. The three money-market calculations must be displayed separately and must update automatically when the input values change.
+### 7.3 Covered Interest Rate Parity Check
+
+The model must calculate:
+
+`F_implied = S0_in * DF_USD / DF_FC`
+
+`PARITY_DIFF = F_implied - F0_in`
+
+`PARITY_PCT = ABS(PARITY_DIFF / F0_in)`
+
+A parity difference of 0.05% or less will be considered within the model's tolerance. A larger difference must be flagged for review.
+
+The initial placeholder rates do not satisfy parity, so the workbook should display a review warning rather than automatically report a formula failure. The analyst must check the market-data dates, quote conventions, interest rates, and borrowing/lending assumptions.
+
+### 7.4 Put Option Checks
+
+The initial put premium must equal:
+
+`PUT_PREMIUM = FC_AMT * PREM_PUT = $257,250`
+
+The net put proceeds must equal:
+
+`USD_PUT(S_T) = FC_AMT * MAX(S_T, K_PUT) + FV_PREM_PUT`
+
+At `S_T = K_PUT`, put proceeds must equal:
+
+`FC_AMT * K_PUT + FV_PREM_PUT`
+
+Below the strike, put proceeds must remain at the protected floor. Above the strike, proceeds must increase as the euro strengthens.
+
+The put premium must be included exactly once, with its financing cost, in the settlement-date proceeds.
+
+### 7.5 Sensitivity Checks
+
+- The sensitivity table must contain exactly 11 scenarios.
+- The first scenario must equal `0.95 * S0_in`.
+- The middle scenario must equal `S0_in`.
+- The final scenario must equal `1.05 * S0_in`.
+- Each consecutive scenario must increase by `S0_in * STEP_FRAC`.
+- Forward and money-market proceeds must remain constant across all 11 scenarios.
+- Unhedged proceeds must equal `FC_AMT * S_T` in every row.
+- Put proceeds must remain at the protected floor below the strike and increase above the strike.
+- The comparison chart must update automatically when inputs change.
+
+### 7.6 Workbook Integrity Checks
+
+- All ten required named inputs must exist and reference the correct input cells.
+- All derived named calculations must be defined consistently.
+- All calculated outputs must use formulas rather than hard-coded results.
+- No calculated cell may display Excel errors such as `#REF!`, `#VALUE!`, `#DIV/0!`, or `#NAME?`.
+- Input cells must be highlighted yellow and calculated output cells gray.
+- All worksheet names must match the workbook architecture in Section 3.
+- The `Notes_Assumptions` worksheet must document market-data sources, access dates, and model limitations.
+- Any failed numerical check must be investigated before the model is used for the Stage 5 recommendation.
+
+## 8. Outputs
+
+The workbook will display the calculated USD proceeds for each hedging strategy, supporting calculations, sensitivity results, and validation checks. All calculated outputs will use formulas and be displayed in gray-shaded cells.
+
+### 8.1 Main Strategy Outputs
+
+| Named Output | Description | Worksheet |
+|---|---|---|
+| `USD_NO_HEDGE` | Baseline unhedged proceeds at `S_T = S0_in` | `Sensitivity` |
+| `USD_FWD` | Guaranteed USD proceeds from the forward hedge | `Forward_Hedge` |
+| `BORROW_FC` | EUR amount borrowed today | `Money_Market` |
+| `USD_NOW` | USD received from converting the borrowed euros | `Money_Market` |
+| `USD_MM` | USD investment proceeds at settlement | `Money_Market` |
+| `F_implied` | Forward rate implied by interest rate parity | `Money_Market` |
+| `PUT_PREMIUM` | Initial USD cost of the put option | `Option_Hedge` |
+| `FV_PREM_PUT` | Negative future value of the put premium | `Option_Hedge` |
+| `USD_FLOOR_PUT` | Minimum net USD proceeds protected by the put | `Option_Hedge` |
+| `USD_PUT` | Baseline net put proceeds at `S_T = S0_in` | `Option_Hedge` |
+| `PARITY_DIFF` | Difference between implied and quoted forward rates | `Money_Market` |
+| `PARITY_PCT` | Absolute percentage difference between implied and quoted forward rates | `Money_Market` |
+| `PARITY_STATUS` | PASS or REVIEW based on the 0.05% parity tolerance | `Money_Market` |
+| `FC_REPAY_CHECK` | Difference between EUR loan repayment and receivable | `Money_Market` |
+| `PUT_FLOOR_CHECK` | Difference between put proceeds at the strike and the protected floor | `Option_Hedge` |
+
+The baseline outputs `USD_NO_HEDGE` and `USD_PUT` will be calculated using `S_T = S0_in`. The sensitivity table will use its own settlement rate for each scenario without redefining these workbook-level names.
+
+### 8.2 Strategy Summary Table
+
+The `Sensitivity` worksheet will contain a summary table showing:
+
+- Unhedged USD proceeds at the baseline rate.
+- Forward hedge USD proceeds.
+- Money-market hedge USD proceeds.
+- Put option net USD proceeds at the baseline rate.
+- Protected minimum proceeds from the put option.
+- Hedge profit or loss compared with the unhedged position.
+
+### 8.3 Sensitivity Table
+
+The workbook will display an 11-row sensitivity table with the following columns:
+
+1. Percentage change in EURUSD.
+2. Settlement exchange rate (`S_T`).
+3. Unhedged USD proceeds.
+4. Forward hedge USD proceeds.
+5. Money-market hedge USD proceeds.
+6. Put option net USD proceeds.
+7. Forward hedge profit versus no hedge.
+8. Money-market hedge profit versus no hedge.
+9. Put option hedge profit versus no hedge.
+10. Highest-proceeds strategy, including no hedge.
+11. Best active hedge, excluding no hedge.
+
+Every scenario will use its own formula-generated settlement exchange rate. If multiple strategies have equal highest proceeds, the table will identify the tie.
+
+### 8.4 Comparison Chart
+
+The `Sensitivity` worksheet will contain a line chart titled **FX Hedging Sensitivity Analysis — Scenario 15**.
+
+- X-axis: Settlement EURUSD exchange rate.
+- Y-axis: USD proceeds at settlement.
+- Four separate series: Unhedged, Forward, Money-Market, and Put Option.
+
+The chart must update automatically when the input values change.
+
+### 8.5 Validation Outputs
+
+The workbook will display the following checks:
+
+- `FC_REPAY_CHECK = BORROW_FC * DF_FC - FC_AMT`
+- `PARITY_DIFF = F_implied - F0_in`
+- `PARITY_PCT = ABS(PARITY_DIFF / F0_in)`
+- `PARITY_STATUS = IF(PARITY_PCT <= 0.0005, "PASS", "REVIEW")`
+- `PUT_FLOOR_CHECK = FC_AMT * MAX(K_PUT, K_PUT) + FV_PREM_PUT - USD_FLOOR_PUT`
+
+`FC_REPAY_CHECK` and `PUT_FLOOR_CHECK` must equal zero within $0.01 or €0.01, as applicable. The parity status must display REVIEW when the difference exceeds 0.05%. A parity warning requires investigation but does not automatically mean the formulas are incorrect.
+
+### 8.6 Output Formatting
+
+- All calculated outputs will be shaded gray.
+- USD amounts will display two decimal places.
+- Exchange rates will display four decimal places.
+- Percentage differences will display as percentages.
+- Every output must use a formula rather than a hard-coded result.
+- All outputs must update automatically when inputs change.
+
+These outputs will provide the information needed to compare the hedging strategies and support the final recommendation to the CFO in Stage 5.
