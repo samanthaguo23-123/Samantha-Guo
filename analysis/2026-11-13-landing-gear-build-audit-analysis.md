@@ -97,3 +97,14 @@ The six manual audit tests confirmed that the reviewed workbook elements followe
 The named ranges, hedge calculations, sensitivity table, chart, and visible validation checks behaved as expected.
 
 The workbook is ready for further integrity verification and Stage 4 market-data population.
+## Finding 6 — Missing Sensitivity Chart
+
+**What was checked:** Reviewed the Sensitivity worksheet to confirm that the workbook included an editable Excel chart comparing unhedged, forward, money-market, and put option proceeds.
+
+**What was found:** The sensitivity table contained the required calculations, but the original workbook was missing the Excel chart.
+
+**Action taken:** Added a four-series Excel chart using the existing sensitivity data. Set the horizontal axis to EUR/USD settlement rates and the vertical axis to net USD proceeds.
+
+**Result:** The corrected workbook was uploaded to GitHub as `capabilities/fx-hedging/model.xlsx`.
+
+**Status:** FIXED — sensitivity chart added.
