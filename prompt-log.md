@@ -86,3 +86,60 @@ I also clarified that the baseline output names refer to calculations at the ini
 The review showed me why a model specification needs precise formulas, consistent named ranges, and clear validation requirements. Small ambiguities in a written specification can lead to incorrect formulas or outputs when an AI builds the Excel workbook.
 
 The revised specification will serve as the instructions for constructing and auditing the workbook in Stage 3.
+## Stage 3 — AI-Assisted Workbook Build and Audit
+
+**Date:** November 13, 2026  
+**Scenario:** 15 — Landing Gear  
+**AI Tool:** ChatGPT
+
+### Prompt 1 — Workbook Generation
+
+**Task:** Generate an Excel workbook based on the committed Stage 2 specification.
+
+**Instructions provided:** Build a working FX hedging workbook from `capabilities/fx-hedging/spec.md`, including all ten required named ranges, formula-driven calculations, eight worksheets, forward and money-market hedges, put and call option calculations, an 11-scenario sensitivity table, a chart, and validation checks.
+
+**AI Output:** An Excel workbook named `model.xlsx` was provided for review.
+
+**Human Review:** Opened the workbook in Microsoft Excel and began auditing its structure and calculations against the specification.
+
+### Prompt 2 — Formula and Calculation Audit
+
+**Task:** Evaluate whether the AI-generated workbook followed the Stage 2 calculation requirements.
+
+**AI Assistance:** ChatGPT provided a step-by-step audit checklist for the named ranges, forward hedge, money-market hedge, option calculations, and parity check.
+
+**Human Review:** Confirmed that the ten named inputs were correctly assigned, the forward hedge produced $12,397,350.00, and the money-market hedge followed the three required steps. Confirmed that the parity check displayed REVIEW.
+
+### Prompt 3 — Sensitivity and Integrity Audit
+
+**Task:** Test whether the sensitivity table and chart recalculated when an input changed.
+
+**AI Assistance:** ChatGPT provided a test using `S0_in = 1.2000`.
+
+**Human Review:** Changed the spot rate from 1.1800 to 1.2000 and confirmed that the sensitivity table and chart updated. Verified that forward proceeds remained unchanged, then restored the original spot rate.
+
+Also reviewed the eight worksheets, formatting, and visible validation checks.
+
+### Prompt 4 — Audit Documentation
+
+**Task:** Prepare a Stage 3 audit report documenting the workbook review.
+
+**AI Output:** ChatGPT drafted a structured audit report containing six findings.
+
+**Human Review:** Used the findings from the Excel inspection to document what was checked, what was found, and what actions were taken.
+
+**Audit Report:** `analysis/2026-11-13-landing-gear-build-audit-analysis.md`
+
+### Specification Correction
+
+Before workbook generation, Section 1 (Problem Statement) was identified as missing from the Stage 2 specification.
+
+The specification was updated and committed to GitHub before continuing the build.
+
+### Remaining Limitations
+
+The workbook contains indicative market inputs that require verification in Stage 4.
+
+The parity check displays REVIEW because the placeholder inputs do not satisfy the model's tolerance. The warning was retained rather than forced to pass.
+
+The manual audit did not identify additional calculation defects. A comprehensive automated formula-integrity check remains to be documented.
