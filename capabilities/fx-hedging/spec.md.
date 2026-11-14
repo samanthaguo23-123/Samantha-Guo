@@ -1,4 +1,25 @@
-## 2. Inputs and Named Ranges
+# FX Hedging Model Specification
+
+**Scenario:** 15 — Landing Gear  
+**Project:** International Financial Management — FX Hedging  
+**Stage:** 2 — Model Specification
+
+## 1. Problem Statement
+
+The company expects to receive EUR 10,500,000 from a foreign customer in 365 days. Because the receivable is denominated in euros, the amount of U.S. dollars the company ultimately receives will depend on the EURUSD exchange rate at settlement.
+
+If the euro depreciates against the U.S. dollar, the company will receive fewer dollars when converting its payment. The objective of this model is to evaluate methods of managing that foreign exchange risk.
+
+The workbook will compare four alternatives:
+
+1. **No Hedge:** Convert the EUR receivable into USD at the settlement exchange rate.
+2. **Forward Hedge:** Lock in a forward exchange rate today to guarantee the USD proceeds.
+3. **Money-Market Hedge:** Borrow euros today, convert them into USD, and invest the dollars until settlement.
+4. **Put Option Hedge:** Purchase a EUR put option to protect against depreciation while retaining potential gains from appreciation, after accounting for the option premium.
+
+The model will use named inputs, formula-driven calculations, an 11-scenario sensitivity analysis, and validation checks to compare settlement-date USD proceeds.
+
+The final hedging recommendation will be developed in Stage 5 after the market-dependent inputs have been verified or replaced with sourced data.## 2. Inputs and Named Ranges
 
 The workbook will use standardized named ranges for all inputs so the calculations are consistent and easy to audit. The values are based on Scenario 15 (Landing Gear) and the assumptions used in the FX Hedging Lab. Market-dependent values are indicative and will be replaced or verified with live market data in Stage 4.
 
