@@ -1,0 +1,60 @@
+# Stage 4 — Market Data Memo
+
+**Project:** FIN 321 FX Hedging  
+**Scenario:** 15 — Landing Gear  
+**Market Data Date:** November 19, 2026  
+**Currency Exposure:** EUR 10,500,000 receivable  
+**Settlement Period:** 365 days
+
+## 1. Market Data Sources
+
+| Input | Value | Source | Observation / Publication Time | Notes |
+|---|---|---|---|---|
+| S0_in — EUR/USD spot | 1.0992 | European Central Bank (ECB) | November 19, 2026; approximately 14:10 CET fixing, published around 16:00 CET | Official daily reference rate used as a spot proxy; not a New York market-close quote |
+| R_USD — 1-year USD rate | Pending | Pending | Pending | To be retrieved |
+| R_FC — 1-year EUR rate | Pending | Pending | Pending | To be retrieved |
+| F0_in — 1-year forward | 1.1807 | Scenario 15 bank quote | Scenario assignment; original quote timestamp not supplied | Retained as the bank quote, not replaced by CIP |
+| K_PUT — Put strike | Pending | Scenario convention | November 19, 2026 | To be set near the live spot |
+| K_CALL — Call strike | Pending | Scenario convention | November 19, 2026 | To be set near the live spot |
+| PREM_PUT — Put premium | 0.0245 USD/EUR | Scenario 15 | Scenario assignment | Original premium retained as an assumption |
+| PREM_CALL — Call premium | 0.0448 USD/EUR | Stage 2 specification | Scenario specification | Original premium retained as an assumption |
+| FC_AMT — Receivable | EUR 10,500,000 | Scenario 15 | Scenario assignment | Fixed contractual exposure |
+| T_DAYS — Settlement period | 365 | Scenario 15 | Scenario assignment | Fixed contractual term |
+
+**Spot source:** https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
+
+## 2. Spot Rate Selection
+
+The ECB's EUR/USD reference rate for November 19, 2026 was 1.0992 USD per EUR. I selected this source because it provides an official, date-specific exchange rate that can be independently verified.
+
+The ECB reference fixing is normally determined around 14:10 CET and published around 16:00 CET. It is not a tradable bank quote or a New York end-of-day close. I am documenting this distinction rather than treating the reference fixing as an executable market price.
+
+## 3. Interest Rate Selection
+
+Pending retrieval of November 19, 2026 one-year USD and EUR rates. The selected instruments, source timestamps, and reasons for using them will be documented here.
+
+## 4. Covered Interest Parity Comparison
+
+The CIP-implied forward will be calculated using:
+
+F_CIP = S0 × (1 + R_USD × 365/360) / (1 + R_FC × 365/360)
+
+The bank's assigned forward quote is 1.1807 USD/EUR and will remain unchanged unless a requote is obtained.
+
+The difference between the CIP-implied forward and the bank quote will be reported both in USD/EUR and in total USD on the EUR 10,500,000 receivable.
+
+**Calculation status:** Pending interest-rate inputs.
+
+## 5. Workbook Population and Validation
+
+The workbook will be populated through its existing named-range input cells.
+
+After population, I will recheck the forward hedge, money-market hedge, option calculations, parity status, 11-row sensitivity table, and sensitivity chart.
+
+**Status:** Not yet populated or validated with Stage 4 market inputs.
+
+## 6. FX Hedging Lab Cross-Check
+
+The updated workbook will be compared against the course FX Hedging Lab.
+
+**Status:** Pending. Any differences and their resolutions will be documented here.
