@@ -11,7 +11,7 @@
 | Input | Value | Source | Observation / Publication Time | Notes |
 |---|---|---|---|---|
 | S0_in — EUR/USD spot | 1.0992 | European Central Bank (ECB) | November 19, 2026; approximately 14:10 CET fixing, published around 16:00 CET | Official daily reference rate used as a spot proxy; not a New York market-close quote |
-| R_USD — 1-year USD rate | Pending Nov. 19 close; latest verified 4.60% (Nov. 17) | Federal Reserve via FRED, DGS1 | Observation: Nov. 17, 2026; published Nov. 18, 2026 | 1-year U.S. Treasury yield selected as a transparent USD interest-rate proxy; government yield is not an executable deposit rate |
+| R_USD — 1-year USD rate | 4.62% (0.0462) | U.S. Department of the Treasury, Daily Treasury Par Yield Curve Rates | Observation: November 19, 2026; retrieved approximately 12:41 PM HST | 1-year Treasury yield used as a USD interest-rate proxy; not an executable deposit rate |
 | R_FC — 1-year EUR rate | 3.037% (0.03037) | Investing.com, Germany 1-Year Bond Yield historical data | Observation: November 19, 2026; exact close time not supplied | German 1-year government bond yield used as a EUR interest-rate proxy; not an executable bank deposit rate |
 | F0_in — 1-year forward | 1.1807 | Scenario 15 bank quote | Scenario assignment; original quote timestamp not supplied | Retained as the bank quote, not replaced by CIP |
 | K_PUT — Put strike | Pending | Scenario convention | November 19, 2026 | To be set near the live spot |
