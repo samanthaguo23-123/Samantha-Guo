@@ -11,7 +11,7 @@
 | Input | Value | Source | Observation / Publication Time | Notes |
 |---|---|---|---|---|
 | S0_in — EUR/USD spot | 1.0992 | European Central Bank (ECB) | November 19, 2026; approximately 14:10 CET fixing, published around 16:00 CET | Official daily reference rate used as a spot proxy; not a New York market-close quote |
-| R_USD — 1-year USD rate | Pending | Pending | Pending | To be retrieved |
+| R_USD — 1-year USD rate | Pending Nov. 19 close; latest verified 4.60% (Nov. 17) | Federal Reserve via FRED, DGS1 | Observation: Nov. 17, 2026; published Nov. 18, 2026 | 1-year U.S. Treasury yield selected as a transparent USD interest-rate proxy; government yield is not an executable deposit rate |
 | R_FC — 1-year EUR rate | Pending | Pending | Pending | To be retrieved |
 | F0_in — 1-year forward | 1.1807 | Scenario 15 bank quote | Scenario assignment; original quote timestamp not supplied | Retained as the bank quote, not replaced by CIP |
 | K_PUT — Put strike | Pending | Scenario convention | November 19, 2026 | To be set near the live spot |
@@ -32,6 +32,9 @@ The ECB reference fixing is normally determined around 14:10 CET and published a
 ## 3. Interest Rate Selection
 
 Pending retrieval of November 19, 2026 one-year USD and EUR rates. The selected instruments, source timestamps, and reasons for using them will be documented here.
+**USD rate selection:** I selected the Federal Reserve's 1-year constant-maturity U.S. Treasury yield (FRED series DGS1) as a transparent, publicly available proxy for a 1-year USD interest rate. The latest observation verified during retrieval was 4.60% on November 17, 2026. The November 19 market-close observation is pending verification. Because a Treasury yield is not the same as a bank deposit or borrowing rate, this proxy introduces a limitation into the covered interest parity comparison.
+
+Source: https://fred.stlouisfed.org/series/DGS1
 
 ## 4. Covered Interest Parity Comparison
 
