@@ -51,7 +51,37 @@ The bank's assigned forward quote is 1.1807 USD/EUR and will remain unchanged un
 The difference between the CIP-implied forward and the bank quote will be reported both in USD/EUR and in total USD on the EUR 10,500,000 receivable.
 
 **Calculation status:** Pending interest-rate inputs.
+## 4. Covered Interest Parity Comparison
 
+Using the November 19, 2026 market-data inputs:
+
+- EUR/USD spot rate: 1.0992
+- USD 1-year interest rate: 4.62%
+- EUR 1-year interest rate: 3.037%
+- Settlement period: 365 days
+- Day-count basis: 360
+- Assigned bank forward quote: 1.1807 USD/EUR
+
+**CIP-implied forward calculation:**
+
+F_CIP = 1.0992 × [1 + 0.0462 × (365/360)] / [1 + 0.03037 × (365/360)]
+
+**CIP-implied forward = 1.116315 USD/EUR**
+
+**Comparison with the bank quote:**
+
+- Bank forward quote: 1.180700 USD/EUR
+- CIP-implied forward: 1.116315 USD/EUR
+- Difference (CIP minus bank): −0.064385 USD/EUR
+- CIP-implied proceeds on €10,500,000: $11,721,307.56
+- Bank-quoted forward proceeds: $12,397,350.00
+- Difference in proceeds: −$676,042.44
+
+**Interpretation:** The bank's assigned forward quote is substantially higher than the forward rate implied by covered interest parity using the selected government-yield proxies. The difference is approximately 5.45% of the bank quote.
+
+The bank quote has been retained rather than replaced by the CIP-implied rate. Because government yields are proxies rather than executable borrowing and lending rates, the discrepancy does not by itself establish an arbitrage opportunity. The difference warrants further investigation and potentially a bank requote.
+
+**Expected parity status:** REVIEW.
 ## 5. Workbook Population and Validation
 
 The workbook will be populated through its existing named-range input cells.
