@@ -115,4 +115,12 @@ I corrected the interest-rate inputs to 4.62% for USD and 3.037% for EUR. The FX
 
 The discrepancy was caused by the FX Lab input format rather than a workbook formula error.
 
-**Cross-check status:** Forward and money-market calculations match. Option calculations remain to be verified.
+### Put Option Cross-Check
+
+The FX Hedging Lab reported protected minimum proceeds of $11,272,299.98.
+
+I independently checked the Option_Hedge worksheet in my Excel workbook. The workbook calculates an initial put premium of $257,250.00, a financed premium cost of $269,300.02, and protected minimum proceeds of $11,272,299.98.
+
+The FX Lab and Excel workbook agree to the nearest cent.
+
+**Final cross-check status:** PASS — Forward hedge, money-market hedge, and put option calculations match the FX Hedging Lab.
