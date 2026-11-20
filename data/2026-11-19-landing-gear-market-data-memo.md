@@ -92,6 +92,27 @@ After population, I will recheck the forward hedge, money-market hedge, option c
 
 ## 6. FX Hedging Lab Cross-Check
 
-The updated workbook will be compared against the course FX Hedging Lab.
+**Date:** November 19, 2026  
 
-**Status:** Pending. Any differences and their resolutions will be documented here.
+I compared my updated Excel workbook with the course FX Hedging Lab using the November 19 market inputs.
+
+### Results
+
+| Calculation | Result |
+|---|---:|
+| Forward hedge proceeds | $12,397,350.00 |
+| EUR borrowed today | €10,186,344.07 |
+| EUR converted to USD | $11,196,829.41 |
+| Money-market hedge proceeds | $11,721,307.56 |
+
+### Discrepancy and Resolution
+
+The FX Lab initially showed money-market proceeds of $11,542,158, which differed from my Excel workbook.
+
+After reviewing the inputs, I identified that the FX Lab expected interest rates entered as percentages rather than decimal fractions.
+
+I corrected the interest-rate inputs to 4.62% for USD and 3.037% for EUR. The FX Lab then produced money-market proceeds of $11,721,307.56, matching my workbook.
+
+The discrepancy was caused by the FX Lab input format rather than a workbook formula error.
+
+**Cross-check status:** Forward and money-market calculations match. Option calculations remain to be verified.
