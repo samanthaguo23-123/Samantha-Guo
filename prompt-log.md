@@ -143,3 +143,38 @@ The workbook contains indicative market inputs that require verification in Stag
 The parity check displays REVIEW because the placeholder inputs do not satisfy the model's tolerance. The warning was retained rather than forced to pass.
 
 The manual audit did not identify additional calculation defects. A comprehensive automated formula-integrity check remains to be documented.
+
+## Stage 4 — Market Data and Workbook Population
+
+**Date:** November 19–20, 2026  
+**Project:** FX Hedging — Scenario 15 (Landing Gear)
+
+### AI Assistance
+
+I used ChatGPT to help identify the market data required for Stage 4, organize the sources, and guide the process of populating my Excel hedging model.
+
+AI assisted with:
+
+- Identifying the required EUR/USD spot rate and USD/EUR interest-rate inputs.
+- Explaining the difference between an ECB reference rate and a market closing rate.
+- Organizing market-data assumptions and source documentation.
+- Reviewing forward, money-market, and option hedge calculations.
+- Comparing Excel outputs against the course FX Hedging Lab.
+- Troubleshooting differences caused by interest-rate input formatting.
+- Preparing the Stage 4 market-data memo and documenting the cross-check results.
+
+### Verification and Corrections
+
+I manually entered the market inputs into Excel and reviewed the resulting calculations.
+
+During the FX Lab cross-check, I discovered that interest rates needed to be entered as percentages rather than decimals. After correcting the inputs, the money-market hedge matched my workbook.
+
+I also verified that the put option protected minimum was $11,272,299.98 in both Excel and the FX Lab.
+
+### Final Results
+
+- Forward hedge: $12,397,350.00
+- Money-market hedge: $11,721,307.56
+- Put protected minimum: $11,272,299.98
+
+**Outcome:** Stage 4 workbook populated, source descriptions updated, and hedge calculations cross-checked against the course FX Hedging Lab.
