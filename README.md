@@ -10,52 +10,44 @@ Beyond accounting, I am particularly interested in **international finance, fina
 
 As I approach graduation, my goal is to pursue a career that allows me to apply my accounting and financial knowledge while continuing to learn and grow professionally. I am also interested in exploring opportunities in international business and finance. Through this portfolio, I hope to showcase my **academic projects, professional experiences, analytical skills, and personal development** as I continue building my career.
 
-# FX Hedging — Scenario 15: Landing Gear
+## FX Hedging Project — Scenario 15: Landing Gear
 
-## Project Overview
+### Project Overview
 
-This project develops an Excel-based foreign exchange hedging model for a company expecting to receive €10,500,000 in 365 days.
+This project evaluates foreign exchange hedging strategies for a EUR 10.5 million receivable due in 365 days. The objective is to recommend a strategy that balances cash-flow certainty, financial costs, liquidity requirements, and exchange-rate risk.
 
-The objective is to compare three hedging strategies—forward contract, money-market hedge, and EUR put option—against the unhedged position to evaluate their effects on USD proceeds.
+The project demonstrates financial modeling, market-data sourcing, Excel development, sensitivity analysis, AI-assisted validation, independent hand verification, and executive financial decision-making.
 
-## Hedging Strategies
+### Project Deliverables
 
-- **Forward Hedge:** Locks in a fixed USD amount using an agreed forward exchange rate.
-- **Money-Market Hedge:** Borrows euros today, converts them into USD, and invests the dollars until settlement.
-- **Put Option Hedge:** Protects against euro depreciation while allowing the company to benefit from euro appreciation, after accounting for the option premium.
+| Stage | Deliverable |
+|---|---|
+| Stage 1 — Executive Brief | Exposure assessment and initial hedge alternatives |
+| Stage 2 — Model Specification | [FX Hedging Specification](capabilities/fx-hedging/spec.md) |
+| Stage 3 — Model Development | [Excel Hedging Model](capabilities/fx-hedging/model.xlsx) |
+| Stage 3 — Model Audit | [Build Audit Analysis](analysis/2026-11-13-landing-gear-build-audit-analysis.md) |
+| Stage 4 — Market Data | [Market Data Memo](data/2026-11-19-landing-gear-market-data-memo.md) |
+| Stage 5 — Independent LLM Execution | [Raw LLM Output](analysis/2026-11-27-landing-gear-independent-llm-output.md) |
+| Stage 5 — Validation | [Validation Analysis](analysis/2026-11-27-landing-gear-validation-analysis.md) |
+| Stage 5 — Executive Decision | [CFO Hedge Decision Memo](docs/decisions/2026-11-27-landing-gear-hedge-decision-memo.md) |
+| AI Documentation | [Prompt Log](prompt-log.md) |
 
-## Project Stages
+### Final Recommendation
 
-1. **Stage 1 — Executive Brief:** Explain the foreign exchange exposure and available hedging strategies.
-2. **Stage 2 — Model Specification:** Define workbook inputs, formulas, architecture, assumptions, sensitivity analysis, validation rules, and outputs.
-3. **Stage 3 — AI-Assisted Build and Audit:** Construct and test the Excel workbook using the specification.
-4. **Stage 4 — Market Data and Population:** Obtain and document market data to populate the workbook.
-5. **Stage 5 — Validation and Decision Memo:** Validate the model and recommend a hedging strategy.
+The analysis recommends a 100% forward hedge, conditional on confirmation of the assigned bank forward rate.
 
-## Current Status
+Under the modeled assumptions, the forward hedge provides $12,397,350 in settlement proceeds and outperforms the alternative receivable strategies across all 11 sensitivity scenarios.
 
-Stage 1: Executive brief completed.
+The covered interest parity discrepancy is identified as a material implementation risk requiring confirmation of executable market quotes before entering into a hedge.
 
-Stage 2: Model specification drafted, reviewed, and revised.
+### Skills Demonstrated
 
-Stages 3–5: Not yet completed.
-
-## Project Files
-
-- `spec.md` — Detailed workbook design and calculation requirements.
-- `README.md` — Project overview and progress.
-- `../../prompt-log.md` — Documentation of AI assistance, review feedback, and revisions.
-
-## Model Design
-
-The planned workbook will contain eight worksheets and compare four outcomes: unhedged, forward hedge, money-market hedge, and put option hedge.
-
-The sensitivity analysis will evaluate 11 EURUSD settlement exchange rates, from 5% below to 5% above the initial spot rate.
-
-All market-dependent placeholder inputs will be verified or replaced with sourced market data during Stage 4.
-
-## Tools
-
-- GitHub — Version control and project documentation.
-- ChatGPT — Assistance with specification drafting, review, and revisions.
-- Microsoft Excel — Planned workbook construction and financial analysis.
+- Foreign exchange risk management
+- Financial modeling in Microsoft Excel
+- Forward, money-market, and option hedge analysis
+- Covered interest parity evaluation
+- Market-data sourcing and documentation
+- Sensitivity and scenario analysis
+- AI-assisted financial analysis and independent validation
+- Executive financial recommendation writing
+- GitHub documentation and version control
