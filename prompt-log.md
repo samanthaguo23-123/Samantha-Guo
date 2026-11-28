@@ -178,3 +178,76 @@ I also verified that the put option protected minimum was $11,272,299.98 in both
 - Put protected minimum: $11,272,299.98
 
 **Outcome:** Stage 4 workbook populated, source descriptions updated, and hedge calculations cross-checked against the course FX Hedging Lab.
+
+## Stage 5 — Independent Validation and Hedge Decision
+
+**Date:** November 27–28, 2026
+
+**AI Tool:** ChatGPT
+
+### Prompt 1 — Independent LLM Execution
+
+**Documents provided:**
+
+- Stage 2 FX Hedging Specification
+- Stage 4 Market Data Memo
+
+**Exact prompt:**
+
+> Using only the two provided documents, independently compute all hedge outcomes for the specified foreign exchange exposure, including the forward hedge, money-market hedge, put option, call option, and unhedged position.
+>
+> Show your calculations, assumptions, and sensitivity analysis at multiple settlement exchange rates. Evaluate covered interest parity and recommend a hedging strategy to the CFO based on your results.
+>
+> Identify any missing information or ambiguities in the provided documents and disclose any assumptions you make.
+
+**Purpose:** Independently reproduce the hedge calculations without providing the Excel workbook or additional coaching.
+
+**Result:** The LLM reproduced the hedge calculations, evaluated sensitivity scenarios, identified documentation inconsistencies, and recommended the forward hedge.
+
+**Raw output:** [Independent LLM Output](analysis/2026-11-27-landing-gear-independent-llm-output.md)
+
+### Subsequent AI-Assisted Validation Activities
+
+The following entries summarize subsequent AI-assisted activities rather than reproduce their exact prompts.
+
+| Activity | Purpose | Outcome |
+|---|---|---|
+| Independent output review | Identify assumptions, calculations, and documentation weaknesses | Conflicting inputs and incomplete documentation identified |
+| Workbook reconciliation | Compare Excel results against independent LLM results | All 18 compared outcomes matched to the nearest cent |
+| Call option verification | Validate call option calculations at multiple settlement rates | Standalone payoff and hypothetical payable costs reconciled |
+| CIP analysis | Evaluate the discrepancy between the assigned and theoretical forward rates | REVIEW status confirmed |
+| Hand verification | Independently verify the forward, money-market, and put option calculations | Calculator results reconciled with reported Excel and LLM results |
+| Specification retrospective | Identify improvements for a future specification | Documentation and validation improvements proposed |
+| CFO decision memo | Interpret financial results and recommend a hedge | Conditional recommendation of a 100% forward hedge |
+| Repository review | Improve organization, navigation, and presentation | Repository documentation and deliverable links updated |
+
+### Human Verification and Decision-Making
+
+I manually recalculated the forward hedge, all three money-market hedge steps, and the put option hedge using a calculator rather than Excel.
+
+I also checked the call option outcomes at different settlement exchange rates and restored the workbook to its baseline settlement assumption after testing.
+
+AI-generated results were compared against the workbook rather than accepted without verification.
+
+The final recommendation considers cash-flow certainty, liquidity requirements, option premiums, opportunity costs, and the covered interest parity discrepancy.
+
+### AI Limitations Identified
+
+- The LLM had to resolve conflicting USD interest-rate inputs.
+- The LLM inferred option strike values that were not explicitly finalized in the market-data memo.
+- The LLM assumed a management preference for guaranteed USD proceeds.
+- Previously reported check figures in the market-data memo limited the independence of the numerical validation.
+- AI-generated calculations do not establish whether market quotations are executable.
+
+### Final Deliverables
+
+- [Independent LLM Output](analysis/2026-11-27-landing-gear-independent-llm-output.md)
+- [Validation Analysis and Specification Retrospective](analysis/2026-11-27-landing-gear-validation-analysis.md)
+- [CFO Hedge Decision Memo](docs/decisions/2026-11-27-landing-gear-hedge-decision-memo.md)
+- [Final Excel Model](capabilities/fx-hedging/model.xlsx)
+
+### Final Conclusion
+
+AI was used as a supporting tool for financial modeling, independent calculation, validation, documentation, and executive communication. Mathematical results were checked through workbook comparisons and manual calculations.
+
+The recommended strategy is a 100% forward hedge, conditional on confirmation of the assigned bank forward rate. The covered interest parity discrepancy remains an implementation concern requiring further market confirmation.
